@@ -4,10 +4,16 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AuthModule, UserModule, MongooseModule.forRoot('mongodb+srv://vighnesh:vicky123@nestjs.bpdy5m1.mongodb.net/')],
+  imports: [
+    AuthModule,
+    UserModule,
+    MongooseModule.forRoot(process.env.MONGO_URL as string),
+    ConfigModule.forRoot(),
+  ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
 export class AppModule {}
