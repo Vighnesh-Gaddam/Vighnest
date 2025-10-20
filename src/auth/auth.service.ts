@@ -1,32 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { registerDto } from './dto/registerUser.dto';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly userService: UserService) {}
-    
-    async registerUser(registerUserDto: registerDto) {
-        // Logic for user register
-        /**
-         * 1. Check if email Already exist
-         * 2. Hash the password
-         * 3. store user into db
-         * 4. generate jwt token
-         * 5. send token in response  
-        */
+  constructor(private readonly userService: UserService) {}
 
-        // console.log("registerUserDto:", registerUserDto)
+  async registerUser(registerUserDto: registerDto) {
+    // Logic for user register
+    /**
+     * 1. Check if email Already exist
+     * 2. Hash the password
+     * 3. store user into db
+     * 4. generate jwt token
+     * 5. send token in response
+     */
 
-        const saltRounds = 10
-        const hash = await bcrypt.hash(registerUserDto.password, saltRounds);
+    // console.log("registerUserDto:", registerUserDto)
 
-        return {message: "hello from auth", User: this.userService.createUser({...registerUserDto}),...registerUserDto, password:hash }
-    }
+    const saltRounds = 10;
+    const hash = await bcrypt.hash(registerUserDto.password, saltRounds);
+    const user = await this.userService.createUser({
+      ...registerUserDto,
+      password: hash,
+    });
 
+    // return {
+    //   message: 'hello from auth',
+    //   User: this.userService.createUser({ ...registerUserDto }),
+    //   ...registerUserDto,
+    //   password: hash,
+    // };
+    return {
+      message: 'hello from auth',
+      User: this.userService.createUser({ ...registerUserDto }),
+      user,
+    };
+  }
 
-    // test(): string {
-    //     return "Hello, I'm Test"
-    // }
+  // test(): string {
+  //     return "Hello, I'm Test"
+  // }
 }
