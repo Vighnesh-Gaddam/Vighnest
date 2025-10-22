@@ -17,24 +17,22 @@ import { registerDto } from './dto/registerUser.dto';
 //     }
 // }
 
-
 // YT Approach
 
 @Controller('auth')
 export class AuthController {
-
-    /**
+  /**
     authService: AuthService;
 
     constructor(authService: AuthService){
         this.authService = authService;
     }
      */
-    constructor(private readonly authService: AuthService){}
+  constructor(private readonly authService: AuthService) {}
 
-    @Post('register')
-    register(@Body() registerUserDto: registerDto) {
-        const result = this.authService.registerUser(registerUserDto);
-        return result
-    }
+  @Post('register')
+  register(@Body() registerUserDto: registerDto) {
+    const createdUser = this.authService.registerUser(registerUserDto);
+    return createdUser;
+  }
 }
