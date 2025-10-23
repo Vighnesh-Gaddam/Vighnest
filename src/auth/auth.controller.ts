@@ -33,6 +33,7 @@ export class AuthController {
   @Post('register')
   register(@Body() registerUserDto: registerDto) {
     const createdUser = this.authService.registerUser(registerUserDto);
+    console.log(createdUser)
     return createdUser;
   }
 }
